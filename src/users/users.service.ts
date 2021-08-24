@@ -17,6 +17,8 @@ export class UsersService {
     // The "relations" here will fetch the related columns from posts and todos, based on each user's ID.
     const users = await this.userRepository.find({
       relations: ['posts', 'todos'],
+      // Order by id.
+      order: { ['id']: 'ASC' },
     });
 
     const extendedUsers: ExtendedUserDto[] = users.map((u) => {
