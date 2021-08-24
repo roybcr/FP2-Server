@@ -1,4 +1,5 @@
 import { Controller, Get, Query } from '@nestjs/common';
+import { ExtendedUserDto } from 'src/users/dto/extended-user.dto';
 import { SearchService } from './search.service';
 
 @Controller('search')

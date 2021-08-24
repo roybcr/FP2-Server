@@ -7,5 +7,5 @@ export class CreateTodoDto {
   readonly title: string;
 
   @IsBoolean()
-  readonly completed: boolean;
+  readonly completed = false;
 }

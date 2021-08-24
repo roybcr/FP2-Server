@@ -28,8 +28,8 @@ export class User {
   @Column('text', { nullable: true })
   street?: string;
 
-  @Column('int', { nullable: true })
-  zipcode?: number;
+  @Column('text', { nullable: true })
+  zipcode?: string;
 
   // In TypeORM you can specify the relations between two entities using decorators such as @OneToMany
   @OneToMany(() => Todo, (todos) => todos.user, { cascade: true })

@@ -1,17 +1,17 @@
 import { PartialType } from '@nestjs/mapped-types';
-import { IsNumber, IsOptional, IsString } from 'class-validator';
+import { IsOptional, IsString } from 'class-validator';
 import { CreateUserDto } from './create-user.dto';
 
 export class ModifyUserDto extends PartialType(CreateUserDto) {
-  @IsNumber()
+  @IsString()
   @IsOptional()
-  readonly zipcode?: number;
+  readonly zipcode: string;
 
   @IsString()
   @IsOptional()
-  readonly city?: string;
+  readonly city: string;
 
   @IsString()
   @IsOptional()
-  readonly street?: string;
+  readonly street: string;
 }

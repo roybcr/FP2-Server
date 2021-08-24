@@ -4,6 +4,7 @@ import { User } from '../users/entities/user.entity';
 import { Repository } from 'typeorm';
 import { CreateTodoDto } from './dto/create-todo.dto';
 import { Todo } from './entities/todo.entity';
+import { UpdateTodoDto } from './dto/update-todo.dto';
 
 @Injectable()
 export class TodosService {
@@ -47,5 +48,17 @@ export class TodosService {
     }
 
     return true;
+  }
+
+  async updateTodo(id: string, updateTodoDto: UpdateTodoDto): Promise<Todo> {
+    const todo = await this.todoRepository.preload({
+      id: +id,
+      completed: updateTodoDto.completed,
+    });
+
+    if (!todo) {
+      throw new NotFoundException(`Todo with ID #${id} does not exist!`);
+    }
+    return await this.todoRepository.save(todo);
   }
 }
