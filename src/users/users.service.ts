@@ -4,7 +4,8 @@ import { Connection, ILike, Repository } from 'typeorm';
 import { CreateUserDto } from './dto/create-user.dto';
 import { ModifyUserDto } from './dto/modify-user.dto';
 import { User } from './entities/user.entity';
-
+import { ExtendedUserDto } from './dto/extended-user.dto';
+import { plainToClass } from 'class-transformer';
 @Injectable()
 export class UsersService {
   constructor(
@@ -12,12 +13,18 @@ export class UsersService {
     private readonly connection: Connection,
   ) {}
 
-  async getAllUsers(): Promise<User[]> {
+  async getAllUsers(): Promise<ExtendedUserDto[]> {
     // The "relations" here will fetch the related columns from posts and todos, based on each user's ID.
     const users = await this.userRepository.find({
       relations: ['posts', 'todos'],
     });
-    return users;
+
+    const extendedUsers: ExtendedUserDto[] = users.map((u) => {
+      const hasUncompleteTodos = u.todos.filter((t) => !t.completed).length > 0;
+      return plainToClass(ExtendedUserDto, { ...u, hasUncompleteTodos });
+    });
+
+    return extendedUsers;
   }
   async searchUsers(query: string): Promise<User[]> {
     const users = await this.connection.getRepository(User).find({
